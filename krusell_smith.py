@@ -1,14 +1,14 @@
 import numpy as np
 import scipy.optimize as opt
 import utils
-import het_block as het
+from het_block import het
 from simple_block import simple
 
 
 '''Part 1: HA block'''
 
-
-def backward_iterate(Va_p, Pi_p, a_grid, e_grid, r, w, beta, eis):
+@het(exogenous='Pi', policy='a', backward='Va')
+def household(Va_p, Pi_p, a_grid, e_grid, r, w, beta, eis):
     """Single backward iteration step using endogenous gridpoint method for households with CRRA utility.
 
     Order of returns matters! backward_var, assets, others
@@ -49,9 +49,6 @@ def backward_iterate(Va_p, Pi_p, a_grid, e_grid, r, w, beta, eis):
     c = coh - a
     Va = (1 + r) * c ** (-1 / eis)
     return Va, a, c
-
-
-household = het.HetBlock(backward_iterate, exogenous='Pi', policy='a', backward='Va')
 
 
 '''Part 2: Simple Blocks'''
